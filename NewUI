@@ -34,7 +34,7 @@ tgls:Toggle(
 
 local tgls =
     tgls:Dropdown(
-    "Pick me!",
+    "Select",
     {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"},
     function(bool)
     end
@@ -42,7 +42,7 @@ local tgls =
 
 local sldr =
     sldrs:Slider(
-    "Slide me!",
+    "Select Slide",
     0,
     200,
     16,
