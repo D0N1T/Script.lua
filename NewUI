@@ -1,0 +1,61 @@
+local DiscordLib =
+    loadstring(game:HttpGet "https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/discord")()
+
+local win = DiscordLib:Window("Bay Hub")
+local serv = win:Server("Main", "")
+local btns = serv:Channel("Buttons")
+local tgls = serv:Channel("Toggles")
+local sldrs = serv:Channel("Sliders")
+
+
+
+btns:Toggle(
+    "Magnet",
+    false,
+    function(bool)
+    end
+)
+
+local btns =
+btns:Toggle(
+    "Clicker",
+    false,
+    function(bool)
+    end
+)
+
+
+tgls:Toggle(
+    "Auto-Farm",
+    false,
+    function(bool)
+    end
+)
+
+local tgls =
+    tgls:Dropdown(
+    "Pick me!",
+    {"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"},
+    function(bool)
+    end
+)
+
+local sldr =
+    sldrs:Slider(
+    "Slide me!",
+    0,
+    200,
+    16,
+    function()
+    end
+)
+
+sldrs:Button(
+    "Speed",
+    function()
+    end
+)
+
+
+local lbls = serv:Channel("Support")
+lbls:Label("Only Support more")
