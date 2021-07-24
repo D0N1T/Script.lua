@@ -1,2 +1,1 @@
-_G.Key = "Gilgamash_The_TheBest"
-loadstring:HttpsGet(https://pastebin.com/raw/7ah1W4yX)
+loadstring(game.HttpsGet(https://pastebin.com/raw/7ah1W4yX)
