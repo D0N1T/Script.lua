@@ -1,1 +1,226 @@
-loadstring(game.HttpsGet(https://pastebin.com/raw/7ah1W4yX)
+local l__ReplicatedStorage__1 = game:GetService("ReplicatedStorage");
+local l__Bindable__9 = l__ReplicatedStorage__1:WaitForChild("Bindable");
+
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/mmo2250a/Main/Main/Ui%20Pu"))()
+
+local X = Material.Load({
+	Title = "Gilgamash Hub",
+	Style = 1,
+	SizeX = 400,
+	SizeY = 350,
+	Theme = "Jester",
+	ColorOverrides = {
+		MainFrame = Color3.fromRGB(235,235,235)
+	}
+})
+
+local Page = X.New({
+	Title = "Farm"
+})
+local Page2 = X.New({
+    Title = "Teleports"
+})
+local Page3 = X.New({
+	Title = "Egg"
+})
+
+local mobs = {}
+local mob = nil
+local farm = false
+local player = game.Players.LocalPlayer
+local world = workspace.Worlds[player.World.Value]
+local enemies, eggs, petVals, toDelete = {}, {}, {}, {}
+
+for i, v in pairs(world.Enemies:GetChildren()) do if not table.find(enemies, v.Name) then table.insert(enemies, v.Name) end end
+for i, v in pairs(require(game:GetService("ReplicatedStorage").ModuleScripts.EggStats)) do table.insert(eggs, i) end
+for i, v in pairs(game:GetService("ReplicatedStorage").ModuleScripts.PetStats:GetChildren()) do for i, v in pairs(require(v)) do petVals[tostring(v.DisplayName)] = v.Rarity end end
+for i,v in pairs(game:GetService("Workspace").Worlds:GetDescendants()) do
+	if v.Parent.Name == "Enemies" and not table.find(mobs,v.DisplayName.Value) then
+		table.insert(mobs,v.DisplayName.Value)
+	end
+end
+
+Page.Dropdown({
+	Text = "Choose an option",
+	Callback = function(value)
+		mob = value
+	end,
+	Options = mobs
+})
+Page.Toggle({
+	Text = "Auto",
+	Callback = function(value)
+		farm = value
+	end,
+	Enabled = false
+})
+Page.Toggle({
+	Text = "Bonus Damage",
+	Callback = function(value)
+		Clicker = value
+	end,
+	Enabled = false
+})
+Page.Toggle({
+	Text = "Magnet",
+	Callback = function(value)
+		Magnet = value
+	end,
+	Enabled = false
+})
+Page.Toggle({
+	Text = "AntiAfk",
+	Callback = function(value)
+		AntiAfk = value
+	end,
+	Enabled = false
+})
+Page3.Toggle({Text = "Open Egg", Callback = function(v) eggFarm = v end})
+Page3.Dropdown({Text = "Egg Selection", Callback = function(v) eggSelection = v end, Options = eggs})
+
+
+game:GetService('RunService').Stepped:connect(function()
+	if farm then
+		pcall(function()
+			game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+		end)		
+	end
+end)
+
+spawn(function()
+        if Clicker == true then
+            while target:FindFirstChild('Health') and target.Health.Value > 0 and farm do game:GetService("ReplicatedStorage").Remote.ClickerDamage:FireServer() wait() end
+        end
+    end)
+spawn(function()
+        if Magnet == true then
+            for i,v in pairs(game:GetService("Workspace").Effects:GetDescendants()) do
+                if v.Name == "Base" then
+                    v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0,0,0)
+                end
+            end
+        end
+    end)
+
+spawn(function()
+        if AntiAfk == true then
+            local bb=game:service'VirtualUser'
+            bb:CaptureController()
+            bb:ClickButton2(Vector2.new())
+        end
+    end)
+
+spawn(function()
+	while wait() do
+		if farm then
+			for i,v in pairs(game:GetService("Workspace").Worlds:GetDescendants()) do
+				if v:FindFirstChild("DisplayName") and v.DisplayName.Value == mob and v:FindFirstChild("HumanoidRootPart") and farm then
+					pcall(function()
+						for i,v in pairs(game:GetService("Workspace").Effects:GetDescendants()) do
+							if v.Name == "Base" then
+								v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame 
+							end
+						end	
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(v.HumanoidRootPart.CFrame.Position + Vector3.new(0,0,0))				
+wait(.2)
+						repeat wait()
+							for i,k in pairs(game:GetService("Workspace").Pets:GetDescendants()) do
+								if k.Name == "Owner" and k.Value == game.Players.LocalPlayer and not k.Parent.Attacking.Value then
+									l__Bindable__9.SendPet:Fire(v, false);
+								end
+							end	
+						until v.Health.Value <= 0 or v == nil or v.HumanoidRootPart == nil or v.DisplayName.Value ~= mob or not farm
+						
+					end)
+				end
+			end
+		end
+	end
+end)
+
+Page2.Button({
+	Text = "Tower",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(-3805.25439, -189.387878, 890.386414)
+
+	end
+})
+
+
+Page2.Button({
+	Text = "DBZ",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(-2384.42188, -187.974945, 439.318756)
+	end
+})
+
+Page2.Button({
+	Text = "Naruto",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(-91,-183,2606)
+
+	end
+})
+Page2.Button({
+	Text = "JoJo",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(10,-183,-2400)
+
+	end
+})
+
+Page2.Button({
+	Text = "One Piece",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(1711, -182,297)
+
+	end
+})
+
+Page2.Button({
+	Text = "My Hero",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(-1987.42188, -187.974945, 2040.4187)
+
+	end
+})
+
+Page2.Button({
+	Text = "Attack on Tiant",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(-710,-182,550)
+
+	end
+})
+
+Page2.Button({
+	Text = "Tokyo ghoul",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(-1922.44055, -186.392303, -1584.56152)
+
+	end
+})
+
+Page2.Button({
+	Text = "Demon Slyer",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(-3165.28516, -187.130676, -1031.86792)
+
+	end
+})
+
+Page2.Button({
+	Text = "HxH",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(1677.21973, -185.801102, 2275.4436)
+
+	end
+})
+
+Page2.Button({
+	Text = "Sao",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame  = CFrame.new(no)
+
+	end
+})
