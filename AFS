@@ -69,13 +69,8 @@ Page.Toggle({
 	end,
 	Enabled = false
 })
-Page2.Toggle({
-	Text = "Open Egg", 
-	Callback = function(value) 
-	Eggs = value
-	end,
-	Enabled = false
-})
+
+
 
 game:GetService('RunService').Stepped:connect(function()
 	if farm then
