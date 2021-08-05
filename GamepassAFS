@@ -1,0 +1,2 @@
+local gp = require(game:GetService("ReplicatedStorage").ModuleScripts.MarketplaceHandler)
+gp.OwnsGamePass = function() return true end
