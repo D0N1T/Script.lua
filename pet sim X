@@ -1,0 +1,153 @@
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/mmo2250a/Main/Main/Ui%20Pu"))()
+
+local X = Material.Load({
+	Title = "Gilgamash Hub",
+	Style = 1,
+	SizeX = 400,
+	SizeY = 350,
+	Theme = "Jester",
+	ColorOverrides = {
+		MainFrame = Color3.fromRGB(235,235,235)
+	}
+})
+
+local Page = X.New({
+	Title = "Farm"
+})
+local Page2 = X.New({
+	Title = "AutoBuyEgg"
+})
+local Page3 = X.New({
+	Title = "Misc"
+})
+
+
+SelectedArea = "Spawn"
+Areas = {}
+for i,v in pairs(game:GetService("Workspace")["__MAP"].Areas:GetChildren()) do
+    table.insert(Areas,v.Name)
+end
+SelectedEgg = "Cracked Egg"
+Eggs = {}
+for i,v in pairs(game:GetService("ReplicatedStorage").Game.Eggs:GetChildren()) do
+    table.insert(Eggs,v.Name)
+end
+
+Page.Toggle(Text = "AutoCoin v1 (NoTp)",function(bool)
+    shared.toggle = bool
+    AutoFarmClosestPartv1 = bool
+end)
+
+Page.Toggle(Text = "AutoCoin v2 (Tp)",function(bool)
+    shared.toggle = bool
+    AutoFarmClosestPartv2 = bool
+end)
+
+Page.Toggle(Text = "AutoCollectDrop",function(bool)
+    shared.toggle = bool
+    AutoCollectDrop = bool
+end)
+
+Page2.Dropdown(Text = "Select Egg",Eggs,true,function(a)
+    SelectedEgg = a
+end)
+
+Page2.Toggle(Text = "Buy Egg",function(bool)
+    shared.toggle = bool
+    AutoBuyEgg = bool
+end) 
+ 
+Page3.Toggle(Text = "AntiAfk",function(bool)
+    shared.toggle = bool
+    AntiAfk = bool
+end)
+
+Page3.Dropdown(Text = "Selecte Area",Areas,true,function(a)
+    SelectedArea = a
+end)
+
+Page3.Button(Text = "Tp Area",function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Workspace")["__MAP"].Areas[SelectedArea].Ground.CFrame.Position + Vector3.new(0,30,0))
+end)
+
+
+function ClosestPart()
+    local dist = math.huge
+    local target = nil
+    for i,v in pairs(game:GetService("Workspace")["__THINGS"].Coins:GetChildren()) do
+        if v.ClassName == "Folder" then
+            if v:FindFirstChild("Coin") then
+                if v.Coin.Transparency == 0 then
+                    local magnitude = (v.Coin.Position - game:GetService("Players").LocalPlayer.Character.Head.Position).magnitude
+                    if magnitude < dist then
+                        dist = magnitude
+                        target = v.Name
+                    end
+                end
+            end
+        end
+    end
+    return target
+end
+
+spawn(function()
+    while wait() do
+        pcall(function()
+            if AutoFarmClosestPartv1 == true then
+                for i,v in pairs(game:GetService("Workspace")["__THINGS"].Pets:GetChildren()) do
+                    if v.ClassName == "Part" then
+                        if AutoFarmClosestPartv1 == true then
+                            workspace.__THINGS.__REMOTES["join coin"]:InvokeServer({tostring(ClosestPart()),{tostring(v.Name)}})
+                            workspace.__THINGS.__REMOTES["farm coin"]:FireServer({tostring(ClosestPart()),tostring(v.Name)})
+                        end
+                    end
+                end
+            end
+        end)
+        
+        pcall(function()
+            if AutoFarmClosestPartv2 == true then
+                for i,v in pairs(game:GetService("Workspace")["__THINGS"].Pets:GetChildren()) do
+                    if v.ClassName == "Part" then
+                        if AutoFarmClosestPartv2 == true then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Workspace")["__THINGS"].Coins[ClosestPart()].Coin.CFrame.Position + Vector3.new(0,0,0))
+                            spawn(function()
+                                workspace.__THINGS.__REMOTES["join coin"]:InvokeServer({tostring(ClosestPart()),{tostring(v.Name)}})
+                                workspace.__THINGS.__REMOTES["farm coin"]:FireServer({tostring(ClosestPart()),tostring(v.Name)})
+                            end)
+                        end
+                    end
+                end
+            end
+        end)
+    end
+end)
+
+game:GetService('RunService').Stepped:connect(function()
+    spawn(function()
+        pcall(function()
+            if AutoCollectDrop == true then 
+                for i,v in pairs(game:GetService("Workspace")["__THINGS"].Orbs:GetChildren()) do
+                    v.CanCollide = false
+                    v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0,0,0)
+                end
+            end
+        end)
+    end)
+    
+    spawn(function()
+        pcall(function()
+            if AutoBuyEgg == true then
+                workspace.__THINGS.__REMOTES["buy egg"]:InvokeServer({tostring(SelectedEgg),false})
+            end
+        end)
+    end)
+    
+    spawn(function()
+        if AntiAfk == true then
+            local bb=game:service'VirtualUser'
+            bb:CaptureController()
+            bb:ClickButton2(Vector2.new())
+        end
+    end)
+end)
