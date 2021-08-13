@@ -4,8 +4,10 @@ local Hub = {
    },
      [6299805723] = {
         [1] = "https://raw.githubusercontent.com/Godlnwza/Main/Main/AFS",
-   
-}
+   },
+     [6299805723] = {
+        [1] = "https://raw.githubusercontent.com/Godlnwza/Main/Main/Anime%20Dimesions",
+   },
 
 for i,v in pairs(Hub) do
     if i == game.PlaceId then
