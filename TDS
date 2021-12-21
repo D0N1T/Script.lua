@@ -399,7 +399,13 @@ if isgame() then
 end
 end
 function scrip:Loadout(t1,t2,t3,t4,t5)
+    getgenv().TroopNameNEW = t1
+    getgenv().TroopName2NEW = t2
+    getgenv().TroopName3NEW = t3
+    getgenv().TroopName4NEW = t4
+    getgenv().TroopName5NEW = t5
     if getgenv().IsMultiStrat then
+        wait(1)
         if isgame() then
             EquipTroop(t1)
             EquipTroop(t2)
@@ -407,7 +413,29 @@ function scrip:Loadout(t1,t2,t3,t4,t5)
             EquipTroop(t4)
             EquipTroop(t5)
         end
-        
+    else
+        if not isgame() then
+            for i,v in pairs(game:GetService("ReplicatedStorage").Assets.Troops:GetChildren()) do
+                local args = {
+                    [1] = "Inventory",
+                    [2] = "Execute",
+                    [3] = "Troops",
+                    [4] = "Remove",
+                    [5] = {
+                        ["Name"] = v.Name
+                    }
+                }
+                game:GetService("ReplicatedStorage").RemoteEvent:FireServer(unpack(args))
+                wait()
+            end
+            EquipTroop(t1)
+            EquipTroop(t2)
+            EquipTroop(t3)
+            EquipTroop(t4)
+            EquipTroop(t5)
+        end
+    end
+end
 function scrip:Place(troop,posx,posy,posz,wave,timem,times,inbetween)
     spawn(function()
     if isgame() then
