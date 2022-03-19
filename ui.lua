@@ -777,7 +777,7 @@ function Library:create(options)
 
 		local displayName = profile:object("TextLabel", {
 			RichText = true,
-			Text = "Welcome, ****"
+			Text = "Welcome ****"
 			TextScaled = true,
 			Position = UDim2.new(0, 105,0, 10),
 			Theme = {TextColor3 = {"Tertiary", 10}},
@@ -789,7 +789,7 @@ function Library:create(options)
 	end
 
 	local profileName = profile:object("TextLabel", {
-		Text = "****",
+		Text = "@",
 		TextScaled = true,
 		Position = UDim2.new(0, 105,0, 47),
 		Theme = {TextColor3 = "Tertiary"},
